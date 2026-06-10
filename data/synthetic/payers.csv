@@ -1,0 +1,21 @@
+payer_id,payer_name,payer_type
+PAY-01,Medicare Part B,medicare
+PAY-02,Medicare Advantage - UHC,medicare
+PAY-03,Medicare Advantage - Humana,medicare
+PAY-04,Medicare Advantage - Aetna,medicare
+PAY-05,Medicare Advantage - Cigna,medicare
+PAY-06,Medicare Part A,medicare
+PAY-07,State Medicaid,medicaid
+PAY-08,Medicaid MCO - Centene,medicaid
+PAY-09,Medicaid MCO - Molina,medicaid
+PAY-10,Medicaid MCO - Anthem,medicaid
+PAY-11,Medicaid MCO - UHC Community,medicaid
+PAY-12,UnitedHealthcare,commercial
+PAY-13,Anthem BCBS,commercial
+PAY-14,Aetna,commercial
+PAY-15,Cigna,commercial
+PAY-16,Humana Commercial,commercial
+PAY-17,Kaiser Permanente,commercial
+PAY-18,BCBS Federal,commercial
+PAY-19,Self Pay,self_pay
+PAY-20,Self Pay - Payment Plan,self_pay

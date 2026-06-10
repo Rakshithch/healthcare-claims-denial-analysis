@@ -5,12 +5,11 @@ __pycache__/
 venv/
 .ipynb_checkpoints/
 
-# Data (synthetic data is regenerable — keep repo light)
-data/synthetic/*.csv
+# Data — synthetic CSVs are committed so the Streamlit Cloud demo works
+# without a generation step (they're small and contain no PHI/PII)
 data/cms/*
 
-# ML artifacts (regenerable via ml/train_model.py)
-ml/artifacts/*.pkl
+# ML artifacts (.pkl committed for the cloud demo risk scorer)
 
 # dbt
 dbt_project/target/
