@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Data (synthetic data is regenerable — keep repo light)
+data/synthetic/*.csv
+data/cms/*
+
+# ML artifacts (regenerable via ml/train_model.py)
+ml/artifacts/*.pkl
+
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+dbt_project/profiles.yml
+
+# Secrets / credentials
+.env
+*.pem
+snowflake_credentials*
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

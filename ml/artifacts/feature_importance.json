@@ -1,0 +1,14 @@
+{
+  "prior_auth_required": 0.642,
+  "claim_amount": 0.6404,
+  "prior_auth_obtained": 0.5782,
+  "payer_type": 0.4316,
+  "cpt_code": 0.3143,
+  "icd10_chapter": 0.2322,
+  "patient_age_bucket": 0.1911,
+  "place_of_service": 0.1746,
+  "state": 0.1487,
+  "provider_type": 0.0537,
+  "claim_month": 0.0264,
+  "claim_quarter": 0.0
+}

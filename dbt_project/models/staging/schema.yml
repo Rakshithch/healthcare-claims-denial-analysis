@@ -1,0 +1,86 @@
+version: 2
+
+sources:
+  - name: raw
+    database: HEALTHCARE_CLAIMS_DENIAL
+    schema: RAW
+    description: Landing zone for synthetic claims CSVs
+    tables:
+      - name: CLAIMS
+        description: Raw claim lines (837/835-style fields), one row per claim
+      - name: PROVIDERS
+        description: Raw provider roster (500 providers)
+      - name: PAYERS
+        description: Raw payer roster (20 payers)
+
+models:
+  - name: stg_claims
+    description: >
+      Typed and cleaned claims. Adds is_denied, claim_year/month/quarter,
+      and days_to_process; filters malformed records.
+    columns:
+      - name: claim_id
+        description: Unique claim identifier (UUID)
+        tests: [not_null, unique]
+      - name: patient_id
+        description: Synthetic patient identifier (P-000001 format)
+        tests: [not_null]
+      - name: provider_id
+        description: Rendering provider (FK to stg_providers)
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_providers')
+              field: provider_id
+      - name: payer_id
+        description: Payer adjudicating the claim (FK to stg_payers)
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_payers')
+              field: payer_id
+      - name: claim_status
+        description: Adjudication outcome
+        tests:
+          - accepted_values:
+              values: ['approved', 'denied', 'pending']
+      - name: payer_type
+        tests:
+          - accepted_values:
+              values: ['medicare', 'medicaid', 'commercial', 'self_pay']
+      - name: provider_type
+        tests:
+          - accepted_values:
+              values: ['hospital', 'physician', 'specialist', 'lab', 'imaging']
+      - name: claim_amount
+        description: Billed amount in USD; must be positive
+        tests: [not_null]
+      - name: denial_flag
+        description: 1 if denied, 0 otherwise
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+      - name: days_to_process
+        description: Days between service_date and claim_date (1-7 by construction)
+
+  - name: stg_providers
+    description: Cleaned provider roster
+    columns:
+      - name: provider_id
+        tests: [not_null, unique]
+      - name: provider_type
+        tests:
+          - accepted_values:
+              values: ['hospital', 'physician', 'specialist', 'lab', 'imaging']
+
+  - name: stg_payers
+    description: Cleaned payer roster
+    columns:
+      - name: payer_id
+        tests: [not_null, unique]
+      - name: payer_type
+        tests:
+          - accepted_values:
+              values: ['medicare', 'medicaid', 'commercial', 'self_pay']

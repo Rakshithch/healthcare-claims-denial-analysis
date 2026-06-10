@@ -1,0 +1,25 @@
+# Core data stack
+pandas>=2.0
+numpy>=1.24
+
+# Visualization
+matplotlib>=3.7
+seaborn>=0.13
+plotly>=5.18
+
+# Machine learning
+scikit-learn>=1.3
+xgboost>=2.0
+shap>=0.44
+
+# Dashboard
+streamlit>=1.30
+
+# Notebooks
+jupyter
+nbformat
+ipykernel
+
+# Optional: Snowflake + dbt (only needed for the warehouse leg)
+# snowflake-connector-python[pandas]>=3.6
+# dbt-snowflake>=1.7

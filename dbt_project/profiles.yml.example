@@ -1,0 +1,15 @@
+# Copy to ~/.dbt/profiles.yml (or dbt_project/profiles.yml — gitignored)
+# and fill in your Snowflake credentials.
+healthcare_claims_denial:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: TRANSFORMER
+      warehouse: COMPUTE_WH
+      database: HEALTHCARE_CLAIMS_DENIAL
+      schema: ANALYTICS
+      threads: 4

@@ -1,0 +1,95 @@
+version: 2
+
+models:
+  - name: mart_denial_analysis
+    description: >
+      Denial KPIs by payer_type x provider_type x denial reason: denial rate,
+      average claim amounts by status, revenue at risk, and each reason's
+      share of segment denials.
+    columns:
+      - name: denial_analysis_key
+        description: Surrogate key (payer_type, provider_type, denial_reason_code)
+        tests: [not_null, unique]
+      - name: payer_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['medicare', 'medicaid', 'commercial', 'self_pay']
+      - name: provider_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['hospital', 'physician', 'specialist', 'lab', 'imaging']
+      - name: denial_reason_code
+        description: CARC code, or NOT_DENIED for the approved/pending bucket
+        tests: [not_null]
+      - name: total_claims
+        tests: [not_null]
+      - name: denial_rate
+        description: denied_claims / total_claims for the segment
+      - name: revenue_at_risk
+        description: Sum of billed amounts on denied claims
+
+  - name: mart_denial_by_provider
+    description: Provider-level denial performance (one row per provider).
+    columns:
+      - name: provider_id
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('stg_providers')
+              field: provider_id
+      - name: provider_type
+        tests: [not_null]
+      - name: total_claims
+        tests: [not_null]
+      - name: denied_claims
+        tests: [not_null]
+      - name: denial_rate
+        description: denied_claims / total_claims
+        tests: [not_null]
+      - name: avg_claim_amount
+        description: Mean billed amount across the provider's claims
+      - name: total_revenue_at_risk
+        description: Sum of billed amounts on the provider's denied claims
+
+  - name: mart_denial_by_payer
+    description: Payer-level denial performance with top denial reason.
+    columns:
+      - name: payer_id
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('stg_payers')
+              field: payer_id
+      - name: payer_type
+        tests:
+          - accepted_values:
+              values: ['medicare', 'medicaid', 'commercial', 'self_pay']
+      - name: denial_rate
+        tests: [not_null]
+      - name: avg_days_to_decision
+        description: Mean days between service date and claim submission
+      - name: top_denial_reason
+        description: Most frequent CARC code among this payer's denials
+
+  - name: mart_monthly_trends
+    description: Monthly denial trend with 3-month rolling average and MoM delta.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [year, month]
+    columns:
+      - name: year
+        tests: [not_null]
+      - name: month
+        tests: [not_null]
+      - name: total_claims
+        tests: [not_null]
+      - name: denial_rate
+        tests: [not_null]
+      - name: denial_rate_3mo_avg
+        description: Trailing 3-month average denial rate (window function)
+      - name: denial_rate_mom_change
+        description: Month-over-month change in denial rate (null for first month)
