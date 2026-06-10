@@ -108,7 +108,20 @@ healthcare-claims-denial-analysis/
 
 ## 📸 Screenshots
 
-> _Placeholder — add screenshots of the dashboard home, trends page, and risk scorer gauge._
+**Dashboard home — portfolio KPIs and filters**
+![Dashboard home](docs/screenshots/home.png)
+
+**Denial overview — payer/provider denial rates and top CARC codes**
+![Denial overview](docs/screenshots/denial_overview.png)
+
+**Live claim risk scorer — XGBoost probability gauge with SHAP risk drivers**
+![Claim risk scorer](docs/screenshots/claim_risk_scorer.png)
+
+**Denial trends — monthly rate, 3-month rolling average, prior-auth impact**
+![Denial trends](docs/screenshots/denial_trends.png)
+
+**Provider performance — volume vs denial rate, bubble size = revenue at risk**
+![Denial by provider](docs/screenshots/denial_by_provider.png)
 
 ## 🔗 Links
 
